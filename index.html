@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TELAR — Menos fast fashion. Más tú.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rojo: #C8102E;
+  --rojo-oscuro: #8B0000;
+  --rojo-claro: #E8304A;
+  --blanco: #FAF6F0;
+  --crema: #F2EBE0;
+  --negro: #0F0B08;
+  --gris: #4A3F3A;
+  --gris-claro: #D4C8BE;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--blanco);
+  color:var(--negro);
+  font-family:'Crimson Pro', serif;
+  overflow-x:hidden;
+}
+
+/* ——— PATRONES DE FONDO ——— */
+.pattern-dark {
+  background-color:var(--negro);
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(200,16,46,0.12) 8px, rgba(200,16,46,0.12) 9px),
+    repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(200,16,46,0.12) 8px, rgba(200,16,46,0.12) 9px);
+}
+.pattern-red {
+  background-color:var(--rojo);
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.07) 10px, rgba(255,255,255,0.07) 11px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.07) 10px, rgba(255,255,255,0.07) 11px);
+}
+.pattern-crema {
+  background-color:var(--crema);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 14px, rgba(200,16,46,0.04) 14px, rgba(200,16,46,0.04) 15px),
+    repeating-linear-gradient(90deg, transparent, transparent 14px, rgba(200,16,46,0.04) 14px, rgba(200,16,46,0.04) 15px);
+}
+
+/* ——— BORDES TEXTILES ——— */
+.tb { height:14px; background: repeating-linear-gradient(90deg, var(--rojo) 0, var(--rojo) 10px, var(--negro) 10px, var(--negro) 12px, var(--rojo) 12px, var(--rojo) 22px, var(--blanco) 22px, var(--blanco) 24px); }
+.tb-sm { height:8px; background: repeating-linear-gradient(90deg, var(--rojo) 0, var(--rojo) 6px, var(--negro) 6px, var(--negro) 8px, var(--rojo-oscuro) 8px, var(--rojo-oscuro) 14px, var(--blanco) 14px, var(--blanco) 16px); }
+.tb-inv { height:14px; background: repeating-linear-gradient(90deg, var(--blanco) 0, var(--blanco) 10px, var(--rojo) 10px, var(--rojo) 12px, var(--blanco) 12px, var(--blanco) 22px, var(--negro) 22px, var(--negro) 24px); }
+
+/* ——— NAV ——— */
+nav {
+  position:fixed; top:0; width:100%; z-index:500;
+  background:rgba(10,7,5,0.97);
+  backdrop-filter:blur(10px);
+  display:flex; align-items:stretch; justify-content:space-between;
+  height:58px;
+}
+.nav-logo-wrap {
+  padding:0 28px;
+  border-right:1px solid rgba(200,16,46,0.3);
+  display:flex; align-items:center;
+  background:var(--rojo); cursor:pointer; flex-shrink:0;
+}
+.nav-logo { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; letter-spacing:0.15em; color:var(--blanco); line-height:1; }
+.nav-links { display:flex; align-items:stretch; list-style:none; flex:1; padding:0 16px; }
+.nav-links li { display:flex; align-items:center; }
+.nav-links a {
+  font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:400;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:rgba(250,246,240,0.5); text-decoration:none; cursor:pointer;
+  padding:0 14px; height:100%; display:flex; align-items:center;
+  border-bottom:2px solid transparent; transition:all 0.2s;
+}
+.nav-links a:hover { color:var(--blanco); border-bottom-color:var(--rojo); }
+.nav-links a.active { color:var(--blanco); border-bottom-color:var(--rojo); }
+.nav-right { padding:0 24px; border-left:1px solid rgba(200,16,46,0.3); display:flex; align-items:center; flex-shrink:0; }
+.nav-cta {
+  font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:500;
+  letter-spacing:0.12em; text-transform:uppercase;
+  background:var(--rojo); color:var(--blanco);
+  padding:10px 20px; cursor:pointer; border:none; text-decoration:none;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  transition:background 0.2s; white-space:nowrap;
+}
+.nav-cta:hover { background:var(--rojo-oscuro); }
+
+/* ——— PAGES ——— */
+.page { display:none; }
+.page.active { display:block; }
+.page-top { padding-top:58px; }
+
+/* ——— SHARED ——— */
+.eyebrow {
+  font-family:'DM Mono',monospace; font-size:0.68rem; font-weight:400;
+  letter-spacing:0.18em; text-transform:uppercase; color:var(--rojo);
+  display:flex; align-items:center; gap:10px; margin-bottom:14px;
+}
+.eyebrow::before { content:''; display:block; width:22px; height:2px; background:var(--rojo); flex-shrink:0; }
+.eyebrow.inv { color:rgba(200,16,46,0.7); }
+.eyebrow.inv::before { background:rgba(200,16,46,0.7); }
+.eyebrow.white { color:rgba(250,246,240,0.5); }
+.eyebrow.white::before { background:rgba(250,246,240,0.4); }
+.display { font-family:'Bebas Neue',sans-serif; letter-spacing:0.03em; line-height:0.93; }
+.btn-r {
+  font-family:'DM Mono',monospace; font-size:0.72rem; font-weight:500;
+  letter-spacing:0.1em; text-transform:uppercase;
+  background:var(--rojo); color:var(--blanco);
+  padding:13px 30px; border:none; cursor:pointer; text-decoration:none; display:inline-block;
+  clip-path:polygon(0 0, calc(100%-8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100%-8px));
+  transition:background 0.2s, transform 0.15s;
+}
+.btn-r:hover { background:var(--rojo-oscuro); transform:translateY(-2px); }
+.btn-or {
+  font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+  border:1.5px solid var(--rojo); color:var(--rojo);
+  padding:11px 26px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:all 0.2s;
+}
+.btn-or:hover { background:var(--rojo); color:var(--blanco); }
+.btn-ow {
+  font-family:'DM Mono',monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+  border:1.5px solid rgba(250,246,240,0.4); color:rgba(250,246,240,0.7);
+  padding:11px 26px; cursor:pointer; text-decoration:none; display:inline-block;
+  transition:all 0.2s;
+}
+.btn-ow:hover { border-color:var(--blanco); color:var(--blanco); }
+
+/* ——— MARQUEE ——— */
+.mq { overflow:hidden; background:var(--rojo); padding:10px 0; }
+.mq-track { display:inline-flex; animation:marquee 24s linear infinite; white-space:nowrap; }
+.mq-item { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:0.18em; color:var(--blanco); padding:0 24px; opacity:0.9; }
+.mq-dot { color:rgba(250,246,240,0.3); font-size:1.2rem; align-self:center; }
+
+/* =============================================
+   PAGE: INICIO
+============================================= */
+.hero {
+  min-height:calc(100vh - 58px);
+  display:grid; grid-template-columns:1fr 1fr;
+}
+.hero-left {
+  padding:72px 56px;
+  display:flex; flex-direction:column; justify-content:center;
+  background:var(--blanco); position:relative;
+}
+.hero-left::after {
+  content:''; position:absolute; right:0; top:0; bottom:0; width:1px;
+  background:repeating-linear-gradient(to bottom,var(--rojo) 0,var(--rojo) 6px,transparent 6px,transparent 10px);
+}
+.hero-tag {
+  font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--rojo);
+  border:1px solid rgba(200,16,46,0.3); display:inline-block;
+  padding:5px 12px; margin-bottom:28px;
+  animation:fadeUp 0.8s 0.1s both;
+}
+.hero-h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,7.5vw,8.5rem);
+  line-height:0.9; letter-spacing:0.02em;
+  color:var(--negro); margin-bottom:8px;
+  animation:fadeUp 0.8s 0.25s both;
+}
+.hero-h1-r { color:var(--rojo); display:block; animation:fadeUp 0.8s 0.4s both; }
+.hero-sub {
+  font-size:1.15rem; line-height:1.75; color:var(--gris); font-weight:300;
+  max-width:420px; margin:22px 0 36px;
+  animation:fadeUp 0.8s 0.55s both;
+}
+.hero-sub strong { color:var(--negro); font-weight:600; }
+.hero-actions { display:flex; gap:12px; flex-wrap:wrap; animation:fadeUp 0.8s 0.7s both; }
+.hero-stats {
+  display:flex; gap:36px; margin-top:52px; padding-top:36px;
+  border-top:1px solid var(--gris-claro);
+  animation:fadeUp 0.8s 0.9s both;
+}
+.hs-num { font-family:'Bebas Neue',sans-serif; font-size:2.4rem; color:var(--rojo); line-height:1; }
+.hs-lbl { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gris); margin-top:3px; }
+
+.hero-right { background:var(--negro); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.hero-bg-pat { position:absolute; inset:0; background-image: repeating-linear-gradient(45deg, var(--rojo) 0, var(--rojo) 1px, transparent 0, transparent 50%), repeating-linear-gradient(-45deg, var(--rojo) 0, var(--rojo) 1px, transparent 0, transparent 50%); background-size:22px 22px; opacity:0.12; }
+.hero-emblem { position:relative; z-index:2; animation:fadeUp 1s 0.5s both; }
+/* Big number stat on hero */
+.hero-big-stat {
+  position:absolute; right:32px; bottom:40px; z-index:3;
+  text-align:right;
+}
+.hbs-num { font-family:'Bebas Neue',sans-serif; font-size:clamp(4rem,7vw,7rem); color:var(--rojo); line-height:1; opacity:0.9; }
+.hbs-txt { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(250,246,240,0.35); margin-top:4px; }
+
+/* Datos de impacto — strip horizontal */
+.impact-strip {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:0; background:var(--negro);
+}
+.is-item {
+  padding:36px 32px;
+  border-right:1px solid rgba(200,16,46,0.18);
+  transition:background 0.2s;
+}
+.is-item:last-child { border-right:none; }
+.is-item:hover { background:rgba(200,16,46,0.08); }
+.is-num { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; color:var(--rojo); line-height:1; margin-bottom:6px; }
+.is-txt { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(250,246,240,0.38); line-height:1.6; }
+
+/* El problema */
+.el-problema {
+  display:grid; grid-template-columns:1fr 1fr; gap:0;
+}
+.ep-left { padding:72px 56px; background:var(--crema); }
+.ep-left h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,4vw,4.5rem); line-height:0.95; margin-bottom:24px; }
+.ep-left h2 span { color:var(--rojo); }
+.ep-left p { font-size:1.05rem; line-height:1.8; color:var(--gris); margin-bottom:16px; }
+.ep-right { background:var(--rojo); padding:60px 44px; display:flex; flex-direction:column; gap:24px; justify-content:center; }
+.ep-fact { border-bottom:1px solid rgba(250,246,240,0.18); padding-bottom:22px; }
+.ep-fact:last-child { border-bottom:none; padding-bottom:0; }
+.ep-fact-n { font-family:'Bebas Neue',sans-serif; font-size:3rem; color:var(--blanco); line-height:1; }
+.ep-fact-t { font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(250,246,240,0.6); margin-top:4px; }
+
+/* Para jóvenes */
+.para-jovenes { padding:72px 56px; background:var(--blanco); }
+.pj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:44px; }
+.pj-card {
+  padding:36px 28px; background:var(--crema);
+  border-top:3px solid var(--gris-claro);
+  transition:all 0.25s; cursor:default;
+}
+.pj-card:hover { background:var(--negro); border-top-color:var(--rojo); }
+.pj-card:hover .pj-num { color:rgba(200,16,46,0.25); }
+.pj-card:hover .pj-title { color:var(--blanco); }
+.pj-card:hover .pj-text { color:rgba(250,246,240,0.5); }
+.pj-num { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:var(--gris-claro); line-height:1; margin-bottom:14px; transition:color 0.25s; }
+.pj-title { font-family:'Bebas Neue',sans-serif; font-size:1.35rem; letter-spacing:0.03em; margin-bottom:10px; transition:color 0.25s; }
+.pj-text { font-size:0.95rem; line-height:1.7; color:var(--gris); transition:color 0.25s; }
+
+/* Qué es Telar */
+.que-es { display:grid; grid-template-columns:3fr 2fr; }
+.qe-left { padding:72px 56px; background:var(--blanco); }
+.qe-left p { font-size:1.05rem; line-height:1.85; color:var(--gris); margin-bottom:18px; }
+.qe-right { background:var(--negro); padding:56px 40px; display:flex; flex-direction:column; justify-content:center; gap:20px; }
+.qe-feature {
+  padding:20px 22px; border-left:2px solid var(--rojo);
+  transition:background 0.2s;
+}
+.qe-feature:hover { background:rgba(200,16,46,0.08); }
+.qe-ft { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.04em; color:var(--blanco); margin-bottom:5px; }
+.qe-fd { font-size:0.88rem; color:rgba(250,246,240,0.45); line-height:1.6; }
+
+/* Fundadores strip */
+.fund-strip { background:var(--negro); padding:0; }
+.fs-header { padding:40px 56px 24px; border-bottom:1px solid rgba(200,16,46,0.15); display:flex; align-items:baseline; gap:16px; }
+.fs-header-t { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--blanco); letter-spacing:0.06em; }
+.fs-header-s { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(200,16,46,0.6); }
+.fs-names { display:flex; gap:0; }
+.fs-n {
+  flex:1; padding:24px 28px;
+  border-right:1px solid rgba(200,16,46,0.12);
+  transition:background 0.2s;
+}
+.fs-n:last-child { border-right:none; }
+.fs-n:hover { background:rgba(200,16,46,0.08); }
+.fs-n-name { font-family:'Crimson Pro',serif; font-size:1.1rem; color:var(--blanco); font-style:italic; margin-bottom:3px; }
+.fs-n-role { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(200,16,46,0.65); }
+
+/* Home CTA */
+.home-cta { padding:90px 56px; text-align:center; position:relative; overflow:hidden; }
+.home-cta::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(200,16,46,0.04) 18px,rgba(200,16,46,0.04) 19px),repeating-linear-gradient(-45deg,transparent,transparent 18px,rgba(200,16,46,0.04) 18px,rgba(200,16,46,0.04) 19px); }
+.home-cta > * { position:relative; z-index:1; }
+.home-cta .display { font-size:clamp(3rem,5.5vw,6.5rem); margin-bottom:20px; }
+.home-cta p { font-size:1.1rem; color:var(--gris); max-width:500px; margin:0 auto 36px; line-height:1.75; }
+
+/* =============================================
+   PAGE: EL PROBLEMA (Fast Fashion)
+============================================= */
+.ff-hero { background:var(--negro); padding:80px 56px; }
+.ff-hero .display { font-size:clamp(3.5rem,6.5vw,7.5rem); color:var(--blanco); }
+.ff-hero .display span { color:var(--rojo); display:block; }
+.ff-hero p { font-size:1.1rem; color:rgba(250,246,240,0.5); max-width:560px; line-height:1.8; margin-top:20px; }
+
+.ff-datos { padding:72px 56px; background:var(--blanco); }
+.ff-datos-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:44px; }
+.ff-dato {
+  padding:36px 28px; background:var(--crema);
+  border-top:3px solid var(--gris-claro);
+  transition:all 0.3s;
+}
+.ff-dato:hover { background:var(--negro); border-top-color:var(--rojo); }
+.ff-dato:hover .ffd-num, .ff-dato:hover .ffd-unit { color:var(--rojo-claro); }
+.ff-dato:hover .ffd-titulo { color:var(--blanco); }
+.ff-dato:hover .ffd-texto { color:rgba(250,246,240,0.5); }
+.ffd-num { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:var(--rojo); line-height:1; transition:color 0.3s; }
+.ffd-unit { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--rojo); transition:color 0.3s; }
+.ffd-titulo { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.03em; margin:10px 0 8px; transition:color 0.3s; }
+.ffd-texto { font-size:0.88rem; line-height:1.65; color:var(--gris); transition:color 0.3s; }
+
+.ff-ciclo { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.fc-left { padding:70px 56px; background:var(--rojo); }
+.fc-left .display { font-size:clamp(2.5rem,4vw,4.5rem); color:var(--blanco); margin-bottom:24px; }
+.fc-left p { font-size:1rem; color:rgba(250,246,240,0.75); line-height:1.8; margin-bottom:16px; }
+.fc-right { padding:70px 44px; background:var(--crema); display:flex; flex-direction:column; gap:0; }
+.fc-step { display:flex; gap:20px; align-items:flex-start; padding:20px 0; border-bottom:1px solid var(--gris-claro); }
+.fc-step:last-child { border-bottom:none; }
+.fc-step-n { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--rojo); line-height:1; width:40px; flex-shrink:0; }
+.fc-step-t { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.03em; margin-bottom:4px; }
+.fc-step-d { font-size:0.85rem; line-height:1.65; color:var(--gris); }
+
+/* Secundarias y prepas */
+.ff-jovenes { padding:72px 56px; background:var(--negro); }
+.ff-jovenes .display { font-size:clamp(2.5rem,4vw,4rem); color:var(--blanco); margin-bottom:40px; }
+.jov-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; }
+.jov-item {
+  padding:40px 36px; background:rgba(250,246,240,0.03);
+  border:1px solid rgba(200,16,46,0.15);
+  transition:all 0.25s;
+}
+.jov-item:hover { background:rgba(200,16,46,0.06); border-color:rgba(200,16,46,0.4); }
+.jov-icon { font-size:2rem; margin-bottom:14px; }
+.jov-t { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.03em; color:var(--blanco); margin-bottom:10px; }
+.jov-d { font-size:0.92rem; line-height:1.75; color:rgba(250,246,240,0.5); }
+
+/* Mitos */
+.ff-mitos { padding:72px 56px; background:var(--crema); }
+.mitos-list { display:flex; flex-direction:column; gap:2px; margin-top:40px; }
+.mito-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:0;
+  background:var(--blanco); transition:box-shadow 0.2s;
+}
+.mito-row:hover { box-shadow:inset 3px 0 0 var(--rojo); }
+.mito-lado { padding:28px 32px; }
+.mito-lado:first-child { border-right:2px solid var(--crema); }
+.mito-tag { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:8px; }
+.mito-tag.falso { color:var(--rojo); }
+.mito-tag.verdad { color:#2d7a4a; }
+.mito-txt { font-size:1rem; line-height:1.7; color:var(--gris); }
+.mito-txt strong { color:var(--negro); }
+
+/* =============================================
+   PAGE: TIPS & GUÍAS
+============================================= */
+.tips-hero { padding:80px 56px 60px; background:var(--blanco); }
+.tips-hero .display { font-size:clamp(3.5rem,6vw,7rem); }
+.tips-hero p { font-size:1.05rem; color:var(--gris); max-width:560px; line-height:1.75; margin-top:16px; }
+
+/* Categorías de tips */
+.tips-cats { display:grid; grid-template-columns:repeat(4,1fr); gap:0; background:var(--negro); }
+.tc-btn {
+  padding:22px 20px; text-align:center; cursor:pointer;
+  border-right:1px solid rgba(200,16,46,0.2);
+  transition:background 0.2s;
+}
+.tc-btn:last-child { border-right:none; }
+.tc-btn:hover, .tc-btn.on { background:var(--rojo); }
+.tc-btn:hover .tc-icon, .tc-btn.on .tc-icon { filter:none; }
+.tc-icon { font-size:1.6rem; margin-bottom:8px; }
+.tc-label { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--blanco); }
+
+.tips-grid-main { padding:56px 56px; background:var(--crema); }
+.tips-list { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+.tip-card {
+  background:var(--blanco); padding:28px 24px;
+  border-top:3px solid var(--gris-claro);
+  transition:all 0.25s; cursor:default;
+}
+.tip-card:hover { background:var(--negro); border-top-color:var(--rojo); }
+.tip-card:hover .tip-cat { color:rgba(200,16,46,0.7); }
+.tip-card:hover .tip-titulo { color:var(--blanco); }
+.tip-card:hover .tip-txt { color:rgba(250,246,240,0.5); }
+.tip-card:hover .tip-tag { background:rgba(200,16,46,0.2); border-color:rgba(200,16,46,0.3); color:rgba(200,16,46,0.8); }
+.tip-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--gris-claro); line-height:1; margin-bottom:12px; transition:color 0.25s; }
+.tip-card:hover .tip-num { color:rgba(200,16,46,0.2); }
+.tip-cat { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--rojo); margin-bottom:7px; transition:color 0.25s; }
+.tip-titulo { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:0.03em; margin-bottom:8px; transition:color 0.25s; }
+.tip-txt { font-size:0.88rem; line-height:1.65; color:var(--gris); margin-bottom:14px; transition:color 0.25s; }
+.tip-tags { display:flex; gap:5px; flex-wrap:wrap; }
+.tip-tag { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.05em; border:1px solid var(--gris-claro); color:var(--gris); padding:2px 6px; transition:all 0.25s; }
+
+/* Guía de desecho correcto */
+.desecho { padding:72px 56px; background:var(--blanco); }
+.desecho-steps { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; margin-top:40px; position:relative; }
+.desecho-steps::before { content:''; position:absolute; top:24px; left:10%; right:10%; height:1px; background:linear-gradient(90deg,transparent,var(--rojo),transparent); }
+.ds { text-align:center; padding:0 8px; }
+.ds-n { width:48px; height:48px; background:var(--negro); border:2px solid var(--rojo); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--rojo); margin:0 auto 16px; position:relative; z-index:1; transition:background 0.2s; }
+.ds:hover .ds-n { background:var(--rojo); color:var(--blanco); }
+.ds-t { font-family:'Bebas Neue',sans-serif; font-size:0.95rem; letter-spacing:0.03em; margin-bottom:8px; }
+.ds-d { font-size:0.8rem; line-height:1.65; color:var(--gris); }
+
+/* =============================================
+   PAGE: CURSOS
+============================================= */
+.cursos-hero { background:var(--negro); padding:80px 56px 56px; }
+.cursos-hero .display { font-size:clamp(3.5rem,6.5vw,7.5rem); color:var(--blanco); }
+.cursos-hero .display span { color:var(--rojo); }
+.cursos-hero p { font-size:1.05rem; color:rgba(250,246,240,0.5); max-width:560px; line-height:1.8; margin-top:18px; }
+
+.filter-wrap { padding:22px 56px; background:var(--crema); border-bottom:1px solid var(--gris-claro); display:flex; gap:7px; flex-wrap:wrap; align-items:center; }
+.f-lbl { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gris); margin-right:4px; }
+.fbtn { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase; border:1px solid var(--gris-claro); background:transparent; color:var(--gris); padding:6px 14px; cursor:pointer; transition:all 0.2s; }
+.fbtn:hover, .fbtn.on { background:var(--rojo); border-color:var(--rojo); color:var(--blanco); }
+
+.cat-sec { padding:50px 56px; }
+.cat-sec:nth-child(odd) { background:var(--blanco); }
+.cat-sec:nth-child(even) { background:var(--crema); }
+.cat-hd { display:flex; align-items:baseline; gap:16px; margin-bottom:5px; }
+.cat-hd-t { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:0.03em; }
+.cat-hd-c { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; color:var(--rojo); }
+.cat-sub { font-size:0.95rem; color:var(--gris); margin-bottom:26px; font-style:italic; }
+.c-grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+
+.cc {
+  background:var(--blanco); border-top:2px solid var(--gris-claro);
+  padding:22px 18px; transition:all 0.25s; cursor:pointer;
+}
+.cc:hover { background:var(--negro); border-top-color:var(--rojo); }
+.cc:hover .cc-lvl, .cc:hover .cc-dur { color:rgba(200,16,46,0.7); }
+.cc:hover .cc-t { color:var(--blanco); }
+.cc:hover .cc-d { color:rgba(250,246,240,0.45); }
+.cc:hover .cc-price { color:var(--rojo-claro); }
+.cc:hover .cc-tag { background:rgba(200,16,46,0.15); border-color:rgba(200,16,46,0.25); color:rgba(200,16,46,0.8); }
+.cc:hover .cc-badge { background:var(--rojo); }
+.cc-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
+.cc-lvl { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--rojo); transition:color 0.25s; }
+.cc-badge { font-family:'DM Mono',monospace; font-size:0.56rem; letter-spacing:0.07em; text-transform:uppercase; background:var(--negro); color:var(--blanco); padding:3px 7px; transition:background 0.25s; }
+.cc-t { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:0.03em; margin-bottom:7px; line-height:1.15; transition:color 0.25s; }
+.cc-d { font-size:0.85rem; line-height:1.6; color:var(--gris); margin-bottom:12px; transition:color 0.25s; }
+.cc-tags { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:12px; }
+.cc-tag { font-family:'DM Mono',monospace; font-size:0.58rem; border:1px solid var(--gris-claro); color:var(--gris); padding:2px 6px; transition:all 0.25s; }
+.cc-ft { display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--gris-claro); padding-top:11px; }
+.cc-dur { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--gris); transition:color 0.25s; }
+.cc-price { font-family:'Bebas Neue',sans-serif; font-size:1.25rem; color:var(--rojo); transition:color 0.25s; }
+
+/* =============================================
+   PAGE: FUNDADORES
+============================================= */
+.fund-hero { display:grid; grid-template-columns:1fr 1fr; }
+.fh-left { background:var(--rojo); padding:80px 56px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
+.fh-left::after { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(45deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 15px),repeating-linear-gradient(-45deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 15px); }
+.fh-left > * { position:relative; z-index:1; }
+.fh-left .display { font-size:clamp(3.5rem,5.5vw,6rem); color:var(--blanco); }
+.fh-left p { font-size:1rem; color:rgba(250,246,240,0.75); line-height:1.8; margin-top:16px; max-width:380px; }
+.fh-right { background:var(--negro); padding:56px 44px; display:flex; flex-direction:column; justify-content:center; gap:0; }
+.fh-origen { border-left:2px solid var(--rojo); padding-left:20px; margin-bottom:28px; }
+.fh-origen-t { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.04em; color:var(--blanco); margin-bottom:8px; }
+.fh-origen-d { font-size:0.92rem; line-height:1.75; color:rgba(250,246,240,0.5); }
+.fh-pills { display:flex; gap:8px; flex-wrap:wrap; margin-top:24px; }
+.fh-pill { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.08em; text-transform:uppercase; border:1px solid rgba(200,16,46,0.35); color:rgba(200,16,46,0.7); padding:4px 10px; }
+
+/* Fundadores grid */
+.founders-sec { padding:70px 56px; background:var(--blanco); }
+.founders-grid5 { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; margin-top:44px; }
+.fc {
+  background:var(--crema); padding:28px 20px;
+  border-bottom:3px solid transparent; transition:all 0.3s;
+}
+.fc:hover { background:var(--negro); border-bottom-color:var(--rojo); }
+.fc:hover .fc-n { color:var(--blanco); }
+.fc:hover .fc-rol { color:rgba(200,16,46,0.75); }
+.fc:hover .fc-bio { color:rgba(250,246,240,0.48); }
+.fc:hover .fc-sk { background:rgba(200,16,46,0.15); border-color:rgba(200,16,46,0.25); color:rgba(200,16,46,0.8); }
+.fc:hover .fc-idx { color:rgba(200,16,46,0.18); }
+.fc-av { width:56px; height:56px; margin-bottom:16px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+.fav1 { background:var(--rojo); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
+.fav2 { background:var(--rojo-oscuro); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
+.fav3 { background:var(--negro); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); border:2px solid var(--rojo); }
+.fav4 { background:var(--rojo); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
+.fav5 { background:var(--rojo-oscuro); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
+.fc-idx { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--gris-claro); line-height:1; margin-bottom:10px; transition:color 0.3s; }
+.fc-n { font-family:'Bebas Neue',sans-serif; font-size:1.15rem; letter-spacing:0.03em; margin-bottom:3px; transition:color 0.3s; }
+.fc-rol { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--rojo); margin-bottom:12px; transition:color 0.3s; }
+.fc-bio { font-size:0.84rem; line-height:1.65; color:var(--gris); margin-bottom:14px; transition:color 0.3s; }
+.fc-skills { display:flex; flex-wrap:wrap; gap:4px; }
+.fc-sk { font-family:'DM Mono',monospace; font-size:0.56rem; border:1px solid var(--gris-claro); color:var(--gris); padding:2px 6px; transition:all 0.3s; }
+
+/* El proyecto integrador */
+.proyecto { display:grid; grid-template-columns:repeat(3,1fr); gap:0; }
+.proy-item { padding:50px 40px; background:var(--negro); }
+.proy-item:nth-child(2) { background:var(--rojo); }
+.proy-item:nth-child(3) { background:var(--negro); }
+.proy-n { font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:rgba(250,246,240,0.08); line-height:1; margin-bottom:16px; }
+.proy-t { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:0.03em; color:var(--blanco); margin-bottom:12px; }
+.proy-d { font-size:0.92rem; line-height:1.8; color:rgba(250,246,240,0.5); }
+.proy-item:nth-child(2) .proy-d { color:rgba(250,246,240,0.75); }
+
+/* =============================================
+   PAGE: NOSOTROS
+============================================= */
+.nos-hero { background:var(--negro); padding:80px 56px; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+.nos-hero .display { font-size:clamp(3rem,5.5vw,6rem); color:var(--blanco); }
+.nos-hero .display em { color:var(--rojo); font-style:normal; display:block; }
+.nos-hero p { font-size:1.05rem; color:rgba(250,246,240,0.5); line-height:1.8; }
+
+.nos-story { display:grid; grid-template-columns:3fr 2fr; }
+.ns-l { padding:70px 56px; background:var(--blanco); }
+.ns-l h3 { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.03em; margin-bottom:14px; }
+.ns-l p { font-size:0.98rem; line-height:1.82; color:var(--gris); margin-bottom:15px; }
+.ns-r { background:var(--rojo); padding:56px 40px; display:flex; flex-direction:column; gap:28px; justify-content:center; }
+.ns-q { border-left:3px solid rgba(250,246,240,0.35); padding-left:18px; }
+.ns-qt { font-family:'Crimson Pro',serif; font-size:1.25rem; font-style:italic; color:var(--blanco); line-height:1.55; margin-bottom:7px; }
+.ns-qb { font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.1em; color:rgba(250,246,240,0.5); }
+
+.nos-mision { padding:70px 56px; background:var(--crema); }
+.mis-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:38px; }
+.mis-blk { padding:36px; background:var(--blanco); border-top:3px solid var(--rojo); }
+.mis-blk h4 { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:0.03em; margin-bottom:12px; }
+.mis-blk p { font-size:0.92rem; line-height:1.8; color:var(--gris); }
+
+.nos-imp { background:var(--negro); padding:70px 56px; display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+.ni { padding:36px 28px; border-right:1px solid rgba(200,16,46,0.18); }
+.ni:last-child { border-right:none; }
+.ni-n { font-family:'Bebas Neue',sans-serif; font-size:3.2rem; color:var(--rojo); line-height:1; margin-bottom:7px; }
+.ni-l { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(250,246,240,0.35); line-height:1.55; }
+
+/* =============================================
+   PAGE: CONTACTO
+============================================= */
+.ct-wrap { display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 58px); }
+.ct-l { background:var(--negro); padding:80px 56px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden; }
+.ct-l::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(45deg,transparent,transparent 16px,rgba(200,16,46,0.07) 16px,rgba(200,16,46,0.07) 17px),repeating-linear-gradient(-45deg,transparent,transparent 16px,rgba(200,16,46,0.07) 16px,rgba(200,16,46,0.07) 17px); }
+.ct-l > * { position:relative; z-index:1; }
+.ct-l .display { font-size:clamp(3rem,5vw,5.5rem); color:var(--blanco); }
+.ct-l .display span { color:var(--rojo); display:block; }
+.ct-l > p { font-size:1rem; color:rgba(250,246,240,0.48); line-height:1.8; margin:18px 0 40px; max-width:360px; }
+.ct-info { display:flex; flex-direction:column; gap:18px; }
+.ci-row { display:flex; gap:14px; align-items:flex-start; }
+.ci-ico { width:36px; height:36px; background:rgba(200,16,46,0.18); display:flex; align-items:center; justify-content:center; font-size:0.95rem; flex-shrink:0; clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); }
+.ci-lbl { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(200,16,46,0.65); margin-bottom:2px; }
+.ci-val { font-size:0.92rem; color:var(--blanco); }
+.ct-r { background:var(--crema); padding:80px 56px; display:flex; flex-direction:column; justify-content:center; }
+.ct-r h3 { font-family:'Bebas Neue',sans-serif; font-size:1.9rem; letter-spacing:0.03em; margin-bottom:5px; }
+.ct-r > p { font-size:0.92rem; color:var(--gris); margin-bottom:28px; }
+.fg { margin-bottom:16px; }
+.fg label { display:block; font-family:'DM Mono',monospace; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gris); margin-bottom:6px; }
+.fg input, .fg select, .fg textarea { width:100%; padding:12px 15px; border:1.5px solid var(--gris-claro); border-radius:0; background:var(--blanco); font-family:'Crimson Pro',serif; font-size:1rem; color:var(--negro); outline:none; transition:border-color 0.2s; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--rojo); }
+.fg textarea { resize:vertical; min-height:95px; }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+
+/* =============================================
+   FOOTER
+============================================= */
+.foot-pat { height:12px; background:repeating-linear-gradient(90deg,var(--rojo) 0,var(--rojo) 8px,var(--negro) 8px,var(--negro) 10px,var(--rojo-oscuro) 10px,var(--rojo-oscuro) 18px,var(--negro) 18px,var(--negro) 20px); }
+footer { background:var(--negro); display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:0; border-top:2px solid var(--rojo); }
+.fb { padding:48px 50px; border-right:1px solid rgba(200,16,46,0.12); }
+.fb-logo { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:0.12em; color:var(--blanco); }
+.fb-logo span { color:var(--rojo); }
+.fb-desc { font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.06em; color:rgba(250,246,240,0.28); line-height:1.8; margin-top:10px; max-width:230px; }
+.fc-col { padding:48px 32px; border-right:1px solid rgba(200,16,46,0.12); }
+.fc-col:last-child { border-right:none; }
+.fc-col h5 { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--rojo); margin-bottom:18px; }
+.fc-col a { display:block; font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.05em; color:rgba(250,246,240,0.32); text-decoration:none; margin-bottom:9px; cursor:pointer; transition:color 0.2s; }
+.fc-col a:hover { color:var(--blanco); }
+.foot-bottom { background:var(--negro); padding:14px 50px; border-top:1px solid rgba(200,16,46,0.1); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.fb-txt { font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.08em; color:rgba(250,246,240,0.18); }
+
+/* ——— ANIMACIONES ——— */
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ——— RESPONSIVE ——— */
+@media(max-width:1080px) {
+  .hero,.el-problema,.ff-ciclo,.que-es,.fund-hero,.fh-left,.nos-hero,.nos-story,.ct-wrap { grid-template-columns:1fr; }
+  .hero-right,.fh-right { height:300px; }
+  .founders-grid5 { grid-template-columns:repeat(2,1fr); }
+  .c-grid4,.ff-datos-grid,.tips-list,.mis-grid,.jov-grid { grid-template-columns:repeat(2,1fr); }
+  .pj-grid,.com-feats,.proyecto { grid-template-columns:1fr; }
+  .impact-strip,.nos-imp { grid-template-columns:repeat(2,1fr); }
+  .tips-cats { grid-template-columns:repeat(2,1fr); }
+  .desecho-steps { grid-template-columns:repeat(3,1fr); }
+  .mito-row { grid-template-columns:1fr; }
+  footer { grid-template-columns:1fr 1fr; }
+  nav { height:auto; }
+  .nav-links a { padding:0 9px; font-size:0.62rem; }
+  .cat-sec, .founders-sec, .tips-grid-main, .desecho, .nos-mision, .para-jovenes, .ff-datos, .ff-jovenes, .ff-mitos, .tips-hero, .cursos-hero { padding-left:24px; padding-right:24px; }
+  .filter-wrap { padding:16px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <div class="nav-logo-wrap" onclick="showPage('inicio')"><div class="nav-logo">TELAR</div></div>
+  <ul class="nav-links">
+    <li><a id="nav-inicio" onclick="showPage('inicio')" class="active">Inicio</a></li>
+    <li><a id="nav-problema" onclick="showPage('problema')">El Problema</a></li>
+    <li><a id="nav-tips" onclick="showPage('tips')">Tips & Guías</a></li>
+    <li><a id="nav-cursos" onclick="showPage('cursos')">Cursos</a></li>
+    <li><a id="nav-fundadores" onclick="showPage('fundadores')">Fundadores</a></li>
+    <li><a id="nav-nosotros" onclick="showPage('nosotros')">Nosotros</a></li>
+  </ul>
+  <div class="nav-right"><a class="nav-cta" onclick="showPage('contacto')">Únete</a></div>
+</nav>
+
+<!-- ===================== PAGE: INICIO ===================== -->
+<div id="page-inicio" class="page active page-top">
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">Plataforma educativa · León, Gto</div>
+      <div class="hero-h1">ROMPE EL</div>
+      <div class="hero-h1 hero-h1-r">CICLO</div>
+      <p class="hero-sub">
+        La ropa que compras y desechas <strong>contamina más de lo que imaginas.</strong>
+        Telar es tu espacio para aprender a reusar, reparar y consumir diferente. Sin perder tu estilo.
+      </p>
+      <div class="hero-actions">
+        <a onclick="showPage('problema')" class="btn-r">Ver el problema</a>
+        <a onclick="showPage('tips')" class="btn-or">Tips gratuitos</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-num">40K</div><div class="hs-lbl">Ton. residuos textiles/año en MX</div></div>
+        <div><div class="hs-num">2ª</div><div class="hs-lbl">Industria más contaminante</div></div>
+        <div><div class="hs-num">7X</div><div class="hs-lbl">Más ropa compramos hoy vs 2000</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-bg-pat"></div>
+      <div class="hero-emblem">
+        <svg width="280" height="280" viewBox="0 0 280 280" fill="none">
+          <polygon points="140,16 264,140 140,264 16,140" fill="none" stroke="#C8102E" stroke-width="1.8"/>
+          <polygon points="140,48 232,140 140,232 48,140" fill="none" stroke="#C8102E" stroke-width="1.2" opacity="0.55"/>
+          <polygon points="140,80 200,140 140,200 80,140" fill="none" stroke="#C8102E" stroke-width="1" opacity="0.4"/>
+          <polygon points="140,108 172,140 140,172 108,140" fill="#C8102E" opacity="0.95"/>
+          <line x1="16" y1="140" x2="264" y2="140" stroke="#C8102E" stroke-width="0.6" opacity="0.25"/>
+          <line x1="140" y1="16" x2="140" y2="264" stroke="#C8102E" stroke-width="0.6" opacity="0.25"/>
+          <circle cx="140" cy="16" r="4" fill="#C8102E"/>
+          <circle cx="264" cy="140" r="4" fill="#C8102E"/>
+          <circle cx="140" cy="264" r="4" fill="#C8102E"/>
+          <circle cx="16" cy="140" r="4" fill="#C8102E"/>
+          <rect x="134" y="74" width="12" height="12" fill="#C8102E" opacity="0.65" transform="rotate(45 140 80)"/>
+          <rect x="194" y="134" width="12" height="12" fill="#C8102E" opacity="0.65" transform="rotate(45 200 140)"/>
+          <rect x="134" y="194" width="12" height="12" fill="#C8102E" opacity="0.65" transform="rotate(45 140 200)"/>
+          <rect x="74" y="134" width="12" height="12" fill="#C8102E" opacity="0.65" transform="rotate(45 80 140)"/>
+          <polyline points="140,16 158,38 140,60 122,38 140,16" fill="none" stroke="#C8102E" stroke-width="1" opacity="0.45"/>
+          <polyline points="264,140 242,158 220,140 242,122 264,140" fill="none" stroke="#C8102E" stroke-width="1" opacity="0.45"/>
+          <polyline points="140,264 158,242 140,220 122,242 140,264" fill="none" stroke="#C8102E" stroke-width="1" opacity="0.45"/>
+          <polyline points="16,140 38,158 60,140 38,122 16,140" fill="none" stroke="#C8102E" stroke-width="1" opacity="0.45"/>
+          <text x="140" y="146" text-anchor="middle" fill="#FAF6F0" font-family="'Bebas Neue',sans-serif" font-size="13" letter-spacing="5" opacity="0.85">TELAR</text>
+        </svg>
+      </div>
+      <div class="hero-big-stat">
+        <div class="hbs-num">85%</div>
+        <div class="hbs-txt">de ropa termina<br>en basura o incinerada</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tb"></div>
+
+  <!-- MARQUEE -->
+  <div class="mq">
+    <div class="mq-track">
+      <span class="mq-item">MENOS FAST FASHION</span><span class="mq-dot">✦</span>
+      <span class="mq-item">MÁS TÚ</span><span class="mq-dot">✦</span>
+      <span class="mq-item">APRENDE A REUSAR</span><span class="mq-dot">✦</span>
+      <span class="mq-item">REPARA TU ROPA</span><span class="mq-dot">✦</span>
+      <span class="mq-item">CONSUME CON CONCIENCIA</span><span class="mq-dot">✦</span>
+      <span class="mq-item">TEXTILES VALORIZABLES</span><span class="mq-dot">✦</span>
+      <span class="mq-item">PROYECTO TSU 2024</span><span class="mq-dot">✦</span>
+      <span class="mq-item">MENOS FAST FASHION</span><span class="mq-dot">✦</span>
+      <span class="mq-item">MÁS TÚ</span><span class="mq-dot">✦</span>
+      <span class="mq-item">APRENDE A REUSAR</span><span class="mq-dot">✦</span>
+      <span class="mq-item">REPARA TU ROPA</span><span class="mq-dot">✦</span>
+      <span class="mq-item">CONSUME CON CONCIENCIA</span><span class="mq-dot">✦</span>
+      <span class="mq-item">TEXTILES VALORIZABLES</span><span class="mq-dot">✦</span>
+      <span class="mq-item">PROYECTO TSU 2024</span><span class="mq-dot">✦</span>
+    </div>
+  </div>
+
+  <!-- IMPACTO STRIP -->
+  <div class="impact-strip">
+    <div class="is-item"><div class="is-num">2,700 L</div><div class="is-txt">de agua para hacer<br>una sola camiseta</div></div>
+    <div class="is-item"><div class="is-num">10%</div><div class="is-txt">de emisiones globales<br>de CO₂ viene del textil</div></div>
+    <div class="is-item"><div class="is-num">$1,000</div><div class="is-txt">al año gasta un joven<br>mexicano promedio en ropa</div></div>
+    <div class="is-item"><div class="is-num">3 kg</div><div class="is-txt">de ropa desecha cada persona<br>en México por año</div></div>
+  </div>
+
+  <!-- EL PROBLEMA -->
+  <section class="el-problema">
+    <div class="ep-left">
+      <div class="eyebrow">¿Por qué importa?</div>
+      <h2 class="display" style="font-size:clamp(2.5rem,4vw,4.5rem)">EL FAST<br>FASHION<br><span>NOS CUESTA</span><br>MUY CARO</h2>
+      <p>Compramos ropa barata que dura pocas lavadas, la desechamos y repetimos el ciclo. Eso tiene un costo enorme para el planeta, para nuestra economía personal y para las comunidades que producen esa ropa.</p>
+      <p>En secundarias y preparatorias de México, el consumo de fast fashion es especialmente alto. La presión social, las tendencias de redes y los precios bajos crean un ciclo difícil de romper.</p>
+      <a onclick="showPage('problema')" class="btn-r" style="margin-top:8px">Entender el problema →</a>
+    </div>
+    <div class="ep-right pattern-red">
+      <div class="ep-fact"><div class="ep-fact-n">56M</div><div class="ep-fact-t">toneladas de ropa producidas al año en el mundo</div></div>
+      <div class="ep-fact"><div class="ep-fact-n">73%</div><div class="ep-fact-t">de esa ropa termina en vertederos o incinerada</div></div>
+      <div class="ep-fact"><div class="ep-fact-n">160+</div><div class="ep-fact-t">prendas compra una persona al año en países de alto consumo</div></div>
+    </div>
+  </section>
+
+  <div class="tb-sm"></div>
+
+  <!-- PARA JÓVENES -->
+  <section class="para-jovenes">
+    <div class="eyebrow">Especialmente para ti</div>
+    <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.8rem);margin-bottom:0">TELAR ESTÁ HECHO<br>PARA JÓVENES COMO TÚ</h2>
+    <div class="pj-grid">
+      <div class="pj-card">
+        <div class="pj-num">01</div>
+        <div class="pj-title">Si estás en secundaria o prepa</div>
+        <div class="pj-text">Aprende desde cero cómo funcionan los textiles, por qué la ropa barata tiene ese precio real, y qué puedes hacer con la ropa que ya tienes en tu clóset sin gastar un peso más.</div>
+      </div>
+      <div class="pj-card">
+        <div class="pj-num">02</div>
+        <div class="pj-title">Si quieres aprender una habilidad</div>
+        <div class="pj-text">Nuestros cursos te enseñan técnicas prácticas como upcycling, reparación visible y tinte natural. Habilidades reales que puedes usar, vender o enseñar a otras personas.</div>
+      </div>
+      <div class="pj-card">
+        <div class="pj-num">03</div>
+        <div class="pj-title">Si quieres hacer la diferencia</div>
+        <div class="pj-text">Cada prenda que no compras innecesariamente, cada reparación, cada reutilización cuenta. Telar te da las herramientas para que ese cambio sea informado y con impacto real.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ ES TELAR -->
+  <section class="que-es">
+    <div class="qe-left">
+      <div class="eyebrow">¿Qué es Telar?</div>
+      <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.8rem);margin-bottom:20px">UNA PLATAFORMA,<br>TRES PROPÓSITOS</h2>
+      <p>Telar nació como proyecto integrador de investigación para Técnico Superior Universitario (TSU). Nuestro equipo investigó los residuos valorizables en México y eligió los textiles como foco: el problema es masivo, poco visible entre jóvenes y con alto potencial de impacto.</p>
+      <p>Lo que empezó como una investigación se convirtió en una plataforma real con tres ejes: concientización sobre fast fashion, difusión de tips y estrategias de reuso, y cursos prácticos para aprender técnicas textiles sostenibles.</p>
+      <a onclick="showPage('nosotros')" class="btn-or" style="margin-top:6px">Nuestra historia →</a>
+    </div>
+    <div class="qe-right">
+      <div class="qe-feature">
+        <div class="qe-ft">📢 Difusión & Concientización</div>
+        <div class="qe-fd">Contenido educativo sobre fast fashion, su impacto ambiental y social, especialmente dirigido a jóvenes de secundaria y prepa.</div>
+      </div>
+      <div class="qe-feature">
+        <div class="qe-ft">💡 Tips & Estrategias</div>
+        <div class="qe-fd">Guías prácticas para reusar, reparar y desechar correctamente la ropa. Sin complicaciones, con resultados reales.</div>
+      </div>
+      <div class="qe-feature">
+        <div class="qe-ft">🧵 Cursos & Técnicas</div>
+        <div class="qe-fd">Aprende upcycling, bordado, tinte natural y más con nuestros cursos en línea diseñados por expertos y accesibles para todos los niveles.</div>
+      </div>
+      <div class="qe-feature">
+        <div class="qe-ft">🔄 Comunidad</div>
+        <div class="qe-fd">Conecta con otras personas que ya están cambiando su relación con la ropa. Trueques, retos y eventos presenciales en León, Gto.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUNDADORES STRIP -->
+  <div class="fund-strip">
+    <div class="fs-header">
+      <div class="fs-header-t">CREADO POR</div>
+      <div class="fs-header-s">Proyecto Integrador TSU · Ingeniería TIC & Desarrollo de Software</div>
+    </div>
+    <div class="fs-names">
+      <div class="fs-n"><div class="fs-n-name">Karen Cruces</div><div class="fs-n-role">Ing. TIC</div></div>
+      <div class="fs-n"><div class="fs-n-name">Romina Gaona</div><div class="fs-n-role">Ing. TIC</div></div>
+      <div class="fs-n"><div class="fs-n-name">Ian Godoy</div><div class="fs-n-role">Dev. Software</div></div>
+      <div class="fs-n"><div class="fs-n-name">Ariel Méndez</div><div class="fs-n-role">Dev. Software</div></div>
+      <div class="fs-n"><div class="fs-n-name">Said Jiménez</div><div class="fs-n-role">Ing. TIC</div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="home-cta pattern-crema">
+    <div class="eyebrow" style="justify-content:center">¿Listo para cambiar?</div>
+    <div class="display" style="font-size:clamp(3rem,5.5vw,6.5rem)">EMPIEZA<br>HOY</div>
+    <p>No necesitas experiencia. Solo querer hacer las cosas diferente. Telar tiene el camino, tú pones las ganas.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a onclick="showPage('tips')" class="btn-r">Ver tips gratuitos</a>
+      <a onclick="showPage('cursos')" class="btn-or">Explorar cursos</a>
+    </div>
+  </section>
+
+</div><!-- /inicio -->
+
+<!-- ===================== PAGE: EL PROBLEMA ===================== -->
+<div id="page-problema" class="page page-top">
+
+  <div class="ff-hero pattern-dark">
+    <div class="eyebrow inv">El problema real</div>
+    <div class="display ff-hero" style="padding:0;background:none" >
+      <div class="display" style="font-size:clamp(3.5rem,6.5vw,7.5rem);color:var(--blanco)">FAST FASHION:<br><span style="color:var(--rojo)">EL COSTO<br>INVISIBLE</span></div>
+    </div>
+    <p>La ropa más barata del mundo tiene un precio oculto que pagan el planeta, los trabajadores y tú. Aquí están los datos que nadie te dice cuando compras esa playera de $50.</p>
+  </div>
+  <div class="tb-inv"></div>
+
+  <!-- Datos -->
+  <div class="ff-datos">
+    <div class="eyebrow">Los números</div>
+    <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.5rem);margin-bottom:0">LAS CIFRAS QUE<br>DEBES CONOCER</h2>
+    <div class="ff-datos-grid">
+      <div class="ff-dato"><div class="ffd-num">2,700 <span class="ffd-unit">L</span></div><div class="ffd-titulo">Una camiseta = 2.5 años de agua</div><div class="ffd-texto">Producir una sola camiseta de algodón consume 2,700 litros de agua. Lo mismo que una persona bebe en dos años y medio.</div></div>
+      <div class="ff-dato"><div class="ffd-num">10 <span class="ffd-unit">%</span></div><div class="ffd-titulo">Del CO₂ global viene del textil</div><div class="ffd-texto">La industria de la moda genera más emisiones de carbono que la aviación y el transporte marítimo juntos. Y sigue creciendo.</div></div>
+      <div class="ff-dato"><div class="ffd-num">85 <span class="ffd-unit">%</span></div><div class="ffd-titulo">De la ropa termina en basura</div><div class="ffd-texto">Solo el 15% de la ropa se recicla o reutiliza a nivel global. El resto: vertederos, incineradoras y océanos.</div></div>
+      <div class="ff-dato"><div class="ffd-num">40 K <span class="ffd-unit">T</span></div><div class="ffd-titulo">Residuos textiles en México/año</div><div class="ffd-texto">México genera más de 40,000 toneladas de residuos textiles anuales. La mayoría sin un sistema de gestión adecuado.</div></div>
+      <div class="ff-dato"><div class="ffd-num">7 X</div><div class="ffd-titulo">Más ropa que hace 20 años</div><div class="ffd-texto">Compramos siete veces más ropa que en el año 2000, pero la usamos siete veces menos tiempo. El ciclo se acelera año con año.</div></div>
+      <div class="ff-dato"><div class="ffd-num">$4 <span class="ffd-unit">USD</span></div><div class="ffd-titulo">Salario diario de costureras</div><div class="ffd-texto">Las trabajadoras que fabrican ropa fast fashion en países como Bangladesh o Cambodia ganan entre $3 y $6 dólares al día.</div></div>
+    </div>
+  </div>
+
+  <!-- El ciclo -->
+  <div class="ff-ciclo">
+    <div class="fc-left pattern-red">
+      <div class="display" style="font-size:clamp(2.5rem,4vw,4rem);color:var(--blanco)">EL CICLO<br>QUE NOS<br>ATRAPÓ</div>
+      <p>El fast fashion funciona porque nos hace creer que necesitamos más de lo que tenemos, y que lo barato no tiene consecuencias. Pero cada compra impulsa un ciclo que daña mucho más de lo que vemos.</p>
+      <p>Entender este ciclo es el primer paso para romperlo. No se trata de no comprar nunca ropa. Se trata de comprar diferente.</p>
+    </div>
+    <div class="fc-right">
+      <div class="fc-step"><div class="fc-step-n">1</div><div><div class="fc-step-t">Producción masiva y barata</div><div class="fc-step-d">Fábricas producen millones de prendas a bajo costo usando materiales sintéticos, agua y mano de obra barata en países sin regulación ambiental.</div></div></div>
+      <div class="fc-step"><div class="fc-step-n">2</div><div><div class="fc-step-t">Tendencias que caducan rápido</div><div class="fc-step-d">Las marcas sacan colecciones cada 2-4 semanas (antes eran 2 al año). Las redes sociales amplifican la presión: si no tienes lo nuevo, "quedas fuera".</div></div></div>
+      <div class="fc-step"><div class="fc-step-n">3</div><div><div class="fc-step-t">Compra impulsiva y bajo precio</div><div class="fc-step-d">El precio bajo elimina la reflexión. Compramos sin pensar porque "si no sirve, no pierdo mucho". Pero en conjunto sí perdemos mucho.</div></div></div>
+      <div class="fc-step"><div class="fc-step-n">4</div><div><div class="fc-step-t">Uso mínimo y desecho rápido</div><div class="fc-step-d">Una prenda fast fashion se usa en promedio 7 veces antes de desecharse. Muchas veces ni siquiera se usan: van directo del armario a la basura.</div></div></div>
+      <div class="fc-step"><div class="fc-step-n">5</div><div><div class="fc-step-t">Sin sistema de reciclaje real</div><div class="fc-step-d">La mayoría de las telas sintéticas mezcladas no son reciclables. Terminan en vertederos donde tardan hasta 200 años en degradarse.</div></div></div>
+    </div>
+  </div>
+
+  <!-- Jóvenes y fast fashion -->
+  <div class="ff-jovenes">
+    <div class="eyebrow inv">Tú y el fast fashion</div>
+    <div class="display" style="font-size:clamp(2rem,3.5vw,4rem);color:var(--blanco);margin-bottom:40px">¿POR QUÉ LOS JÓVENES<br>SON LOS MÁS AFECTADOS?</div>
+    <div class="jov-grid">
+      <div class="jov-item"><div class="jov-icon">📱</div><div class="jov-t">Redes sociales y presión de tendencias</div><div class="jov-d">TikTok, Instagram y YouTube crean ciclos de tendencias que duran días. La presión por "tener lo nuevo" es más fuerte que nunca en adolescentes y jóvenes adultos.</div></div>
+      <div class="jov-item"><div class="jov-icon">💸</div><div class="jov-t">Precios bajos que parecen accesibles</div><div class="jov-d">Shein, Temu y tiendas similares ofrecen ropa desde $30-$80 pesos. Pero comprar 10 prendas baratas al mes representa más gasto que 2 prendas de calidad al año.</div></div>
+      <div class="jov-item"><div class="jov-icon">🏫</div><div class="jov-t">Poco conocimiento en escuelas</div><div class="jov-d">En secundarias y preparatorias raramente se habla del impacto textil. El tema no está en los planes de estudio y los jóvenes consumen sin información real.</div></div>
+      <div class="jov-item"><div class="jov-icon">🔄</div><div class="jov-t">Identidad ligada al consumo</div><div class="jov-d">La cultura de "haul" (mostrar compras masivas) se normaliza como entretenimiento. Vestir diferente cada día se convierte en parte de la identidad, impulsando el consumo excesivo.</div></div>
+    </div>
+  </div>
+
+  <!-- Mitos -->
+  <div class="ff-mitos">
+    <div class="eyebrow">Desmintiendo creencias</div>
+    <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.5rem);margin-bottom:0">MITOS DEL<br>FAST FASHION</h2>
+    <div class="mitos-list">
+      <div class="mito-row">
+        <div class="mito-lado"><div class="mito-tag falso">✗ Mito</div><div class="mito-txt">"Si la ropa es barata, al menos <strong>no me siento culpable</strong> de botarla."</div></div>
+        <div class="mito-lado"><div class="mito-tag verdad">✓ Realidad</div><div class="mito-txt">El daño ambiental ocurre en la producción, no en el uso. <strong>Una prenda barata contamina igual que una cara</strong> al fabricarse.</div></div>
+      </div>
+      <div class="mito-row">
+        <div class="mito-lado"><div class="mito-tag falso">✗ Mito</div><div class="mito-txt">"La ropa que dono <strong>va a personas que la necesitan</strong>."</div></div>
+        <div class="mito-lado"><div class="mito-tag verdad">✓ Realidad</div><div class="mito-txt"><strong>El 70-80% de la ropa donada</strong> termina en mercados de segunda mano africanos o en basureros en Ghana, Chile y otros países.</div></div>
+      </div>
+      <div class="mito-row">
+        <div class="mito-lado"><div class="mito-tag falso">✗ Mito</div><div class="mito-txt">"<strong>Yo solo</strong> no puedo cambiar nada con mis decisiones de compra."</div></div>
+        <div class="mito-lado"><div class="mito-tag verdad">✓ Realidad</div><div class="mito-txt">Si <strong>100,000 jóvenes mexicanos</strong> reducen 3 compras impulsivas al año, evitan el equivalente a toneladas de residuos textiles y cientos de miles de litros de agua.</div></div>
+      </div>
+      <div class="mito-row">
+        <div class="mito-lado"><div class="mito-tag falso">✗ Mito</div><div class="mito-txt">"La ropa <strong>sustentable es cara</strong> y no está al alcance de todos."</div></div>
+        <div class="mito-lado"><div class="mito-tag verdad">✓ Realidad</div><div class="mito-txt">Reusar, reparar y comprar de segunda mano es <strong>más barato</strong> que fast fashion a mediano plazo. No se trata de marcas eco, sino de hábitos diferentes.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /problema -->
+
+<!-- ===================== PAGE: TIPS & GUÍAS ===================== -->
+<div id="page-tips" class="page page-top">
+
+  <div class="tips-hero">
+    <div class="eyebrow">Guías gratuitas</div>
+    <div class="display" style="font-size:clamp(3.5rem,6.5vw,7rem)">TIPS &<br>ESTRATEGIAS</div>
+    <p>Consejos prácticos para reducir tu consumo textil, reusar lo que ya tienes y desechar correctamente lo que ya no necesitas. Sin teoría. Solo acción.</p>
+  </div>
+  <div class="tb-sm"></div>
+
+  <!-- Categorías -->
+  <div class="tips-cats">
+    <div class="tc-btn on"><div class="tc-icon">♻️</div><div class="tc-label">Reusar</div></div>
+    <div class="tc-btn"><div class="tc-icon">🔧</div><div class="tc-label">Reparar</div></div>
+    <div class="tc-btn"><div class="tc-icon">🗑️</div><div class="tc-label">Desechar bien</div></div>
+    <div class="tc-btn"><div class="tc-icon">🛍️</div><div class="tc-label">Comprar mejor</div></div>
+  </div>
+
+  <!-- Tips grid -->
+  <div class="tips-grid-main">
+    <div class="eyebrow">Para empezar hoy</div>
+    <h2 class="display" style="font-size:clamp(1.8rem,3vw,3rem);margin-bottom:0">LO QUE PUEDES<br>HACER AHORA MISMO</h2>
+    <div class="tips-list" style="margin-top:36px">
+
+      <div class="tip-card"><div class="tip-num">01</div><div class="tip-cat">Reusar</div><div class="tip-titulo">Inventario de tu clóset</div><div class="tip-txt">Antes de comprar algo nuevo, revisa lo que ya tienes. El 80% de las personas usa solo el 20% de su ropa. Reorganizar tu clóset "genera" ropa nueva sin gastar.</div><div class="tip-tags"><span class="tip-tag">Gratis</span><span class="tip-tag">30 min</span><span class="tip-tag">Impacto alto</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">02</div><div class="tip-cat">Reparar</div><div class="tip-titulo">Cose ese botón que perdiste</div><div class="tip-txt">Una prenda con un botón o costura rota no es basura. Con hilo, aguja y 10 minutos puedes devolverle la vida. Tutorial básico en nuestra sección de cursos.</div><div class="tip-tags"><span class="tip-tag">$0 costo</span><span class="tip-tag">Principiante</span><span class="tip-tag">10 min</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">03</div><div class="tip-cat">Comprar mejor</div><div class="tip-titulo">La regla de las 30 veces</div><div class="tip-txt">Antes de comprar una prenda, pregúntate: ¿me la pondré al menos 30 veces? Si la respuesta es no, no la compres. Simple y efectivo para frenar compras impulsivas.</div><div class="tip-tags"><span class="tip-tag">Mindset</span><span class="tip-tag">Finanzas</span><span class="tip-tag">Hábito</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">04</div><div class="tip-cat">Reusar</div><div class="tip-titulo">Intercambia con amigos</div><div class="tip-txt">Organiza un "swap" con amigos o familia: cada quien lleva ropa que ya no usa y se la intercambian. Ropa "nueva" para todos, costo cero, residuos cero.</div><div class="tip-tags"><span class="tip-tag">Social</span><span class="tip-tag">Gratis</span><span class="tip-tag">Divertido</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">05</div><div class="tip-cat">Desechar bien</div><div class="tip-titulo">Puntos de acopio textil en León</div><div class="tip-txt">Antes de tirar ropa a la basura, llévala a un punto de acopio. En León, Gto hay centros de reciclaje textil, tianguis y colectas de organizaciones sociales activos.</div><div class="tip-tags"><span class="tip-tag">León Gto</span><span class="tip-tag">Reciclaje</span><span class="tip-tag">Donación</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">06</div><div class="tip-cat">Reusar</div><div class="tip-titulo">Transforma antes de tirar</div><div class="tip-txt">Una playera vieja puede ser: un trapo de limpieza, un bolso de tela, material para patchwork o base para un nuevo proyecto textil. La basura es la última opción.</div><div class="tip-tags"><span class="tip-tag">Upcycling</span><span class="tip-tag">DIY</span><span class="tip-tag">Creativo</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">07</div><div class="tip-cat">Comprar mejor</div><div class="tip-titulo">Segunda mano primero</div><div class="tip-txt">Mercados de pulgas, Vinted, Facebook Marketplace, tianguis. La ropa de segunda mano es más barata, única y tiene un impacto ambiental muchísimo menor que la ropa nueva.</div><div class="tip-tags"><span class="tip-tag">Segunda mano</span><span class="tip-tag">Ahorro</span><span class="tip-tag">Digital</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">08</div><div class="tip-cat">Reparar</div><div class="tip-titulo">Parches como diseño, no como vergüenza</div><div class="tip-txt">El Sashiko japonés convierte las reparaciones en arte. En lugar de ocultar un hoyo o desgaste, hazlo el punto focal de la prenda. Es tendencia y tiene historia de siglos.</div><div class="tip-tags"><span class="tip-tag">Sashiko</span><span class="tip-tag">Arte</span><span class="tip-tag">Avanzado</span></div></div>
+
+      <div class="tip-card"><div class="tip-num">09</div><div class="tip-cat">Desechar bien</div><div class="tip-titulo">Qué sí se puede reciclar</div><div class="tip-txt">No toda la ropa se recicla igual. Telas naturales (algodón, lana, lino) se compostan o reciclan mejor. Las sintéticas (poliéster, nylon) son más difíciles. Aprende a leer la etiqueta.</div><div class="tip-tags"><span class="tip-tag">Etiquetas</span><span class="tip-tag">Materiales</span><span class="tip-tag">Información</span></div></div>
+
+    </div>
+  </div>
+
+  <!-- Guía de desecho correcto -->
+  <div class="desecho">
+    <div class="eyebrow">Paso a paso</div>
+    <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.5rem);margin-bottom:0">CÓMO DESECHAR<br>CORRECTAMENTE</h2>
+    <div class="desecho-steps">
+      <div class="ds"><div class="ds-n">1</div><div class="ds-t">Evalúa el estado</div><div class="ds-d">¿La prenda está en buen estado, tiene daños menores o está muy deteriorada? Eso determina qué sigue.</div></div>
+      <div class="ds"><div class="ds-n">2</div><div class="ds-t">¿Puedes repararla?</div><div class="ds-d">Botones, costuras, manchas, roturas menores. Busca tutoriales. Si sí, repara antes de desechar.</div></div>
+      <div class="ds"><div class="ds-n">3</div><div class="ds-t">¿Puedes donarla?</div><div class="ds-d">Si está en buen estado y no la necesitas, dona a centros de acopio serios que den seguimiento a la ropa recibida.</div></div>
+      <div class="ds"><div class="ds-n">4</div><div class="ds-t">¿Puedes transformarla?</div><div class="ds-d">Trozos de tela para patchwork, trapos de limpieza, relleno, material para arte. Antes del basureros, hay opciones.</div></div>
+      <div class="ds"><div class="ds-n">5</div><div class="ds-t">Punto de acopio textil</div><div class="ds-d">Si nada funciona, lléva la prenda a un punto de reciclaje textil. Nunca al bote de basura general si puedes evitarlo.</div></div>
+    </div>
+  </div>
+
+</div><!-- /tips -->
+
+<!-- ===================== PAGE: CURSOS ===================== -->
+<div id="page-cursos" class="page page-top">
+
+  <div class="cursos-hero pattern-dark">
+    <div class="eyebrow inv">Aprende a hacer</div>
+    <div class="display" style="font-size:clamp(3.5rem,6vw,7rem);color:var(--blanco)">CURSOS<br><span>TEXTILES</span></div>
+    <p>Habilidades prácticas para transformar telas, reusar ropa y crear técnicas propias. Aprende desde cero o profundiza en lo que ya sabes. Para cualquier edad, con enfoque en jóvenes.</p>
+  </div>
+  <div class="tb-inv"></div>
+
+  <div class="filter-wrap">
+    <span class="f-lbl">Filtrar:</span>
+    <button class="fbtn on">Todos</button>
+    <button class="fbtn">Gratis</button>
+    <button class="fbtn">Básico</button>
+    <button class="fbtn">Intermedio</button>
+    <button class="fbtn">Avanzado</button>
+    <button class="fbtn">Online</button>
+    <button class="fbtn">Presencial</button>
+  </div>
+
+  <!-- CAT: PARA EMPEZAR -->
+  <div class="cat-sec">
+    <div class="cat-hd"><div class="cat-hd-t">Para empezar desde cero</div><div class="cat-hd-c">04 cursos</div></div>
+    <div class="cat-sub">No necesitas experiencia previa. Solo ganas de aprender y telas en casa.</div>
+    <div class="c-grid4">
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div><span class="cc-badge" style="background:var(--rojo)">Recomendado</span></div><div class="cc-t">Costura de Emergencia</div><div class="cc-d">Botones, dobladillos, costuras descosidas y zippers. Las reparaciones esenciales para alargar la vida de tu ropa sin gastar.</div><div class="cc-tags"><span class="cc-tag">Reparación</span><span class="cc-tag">Sin máquina</span><span class="cc-tag">Esencial</span></div><div class="cc-ft"><span class="cc-dur">⌚ 2 sem · Online</span><span class="cc-price">$280</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div><span class="cc-badge">Nuevo</span></div><div class="cc-t">Inventario y Organización de Clóset</div><div class="cc-d">Aprende a evaluar tu ropa, crear looks con lo que tienes y definir qué guardar, transformar o desechar correctamente.</div><div class="cc-tags"><span class="cc-tag">Organización</span><span class="cc-tag">Mindset</span><span class="cc-tag">Gratis</span></div><div class="cc-ft"><span class="cc-dur">⌚ 1 sem · Online</span><span class="cc-price">Gratis</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div></div><div class="cc-t">Camisetas al Nuevo Estilo</div><div class="cc-d">Transforma playeras viejas con tijeras, costuras y aplicaciones. Sin máquina. Resultados inmediatos desde la primera sesión.</div><div class="cc-tags"><span class="cc-tag">DIY</span><span class="cc-tag">Sin máquina</span><span class="cc-tag">Rápido</span></div><div class="cc-ft"><span class="cc-dur">⌚ 3 sem · Online</span><span class="cc-price">$450</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div><span class="cc-badge">Nuevo</span></div><div class="cc-t">Bufandas & Cuellos de Retazo</div><div class="cc-d">Transforma telas sobrantes en bufandas e infinity scarves. El primer proyecto textil perfecto para principiantes absolutos.</div><div class="cc-tags"><span class="cc-tag">Retazos</span><span class="cc-tag">Fácil</span><span class="cc-tag">Regalo</span></div><div class="cc-ft"><span class="cc-dur">⌚ 2 sem · Online</span><span class="cc-price">$320</span></div></div>
+    </div>
+  </div>
+
+  <!-- CAT: UPCYCLING -->
+  <div class="cat-sec">
+    <div class="cat-hd"><div class="cat-hd-t">Upcycling & Transformación</div><div class="cat-hd-c">04 cursos</div></div>
+    <div class="cat-sub">Convierte ropa vieja en piezas nuevas con técnicas creativas de reutilización y diseño.</div>
+    <div class="c-grid4">
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div><span class="cc-badge" style="background:var(--rojo)">Popular</span></div><div class="cc-t">Upcycling de Jeans & Denim</div><div class="cc-d">Bolsos, delantales, cojines y más a partir de pantalones viejos. El más popular de Telar por sus resultados inmediatos y bajo costo.</div><div class="cc-tags"><span class="cc-tag">Costura</span><span class="cc-tag">Denim</span><span class="cc-tag">Sin máquina</span></div><div class="cc-ft"><span class="cc-dur">⌚ 6 sem · Online</span><span class="cc-price">$890</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div></div><div class="cc-t">De Ropa Vieja a Accesorios</div><div class="cc-d">Aretes, pulseras, cinturones y pequeños bolsos hechos con retazos y prendas que ya no usas. Sin inversión inicial.</div><div class="cc-tags"><span class="cc-tag">Accesorios</span><span class="cc-tag">Retazos</span><span class="cc-tag">Creativo</span></div><div class="cc-ft"><span class="cc-dur">⌚ 4 sem · Online</span><span class="cc-price">$580</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Intermedio</div><span class="cc-badge">Nuevo</span></div><div class="cc-t">Abrigos & Chamarras Reborn</div><div class="cc-d">Técnicas de corte y confección para transformar abrigos y chamarras usadas en prendas modernas con nueva identidad.</div><div class="cc-tags"><span class="cc-tag">Patronaje</span><span class="cc-tag">Máquina</span><span class="cc-tag">Abrigos</span></div><div class="cc-ft"><span class="cc-dur">⌚ 8 sem · Online</span><span class="cc-price">$1,100</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Avanzado</div><span class="cc-badge" style="background:var(--rojo-oscuro)">Certificado</span></div><div class="cc-t">Diseño Sostenible: tu colección</div><div class="cc-d">Construye una mini colección 100% con ropa reciclada y segunda mano. Patronaje, moodboard y presentación final.</div><div class="cc-tags"><span class="cc-tag">Colección</span><span class="cc-tag">Patronaje</span><span class="cc-tag">Certificado</span></div><div class="cc-ft"><span class="cc-dur">⌚ 12 sem · Online+Presencial</span><span class="cc-price">$2,800</span></div></div>
+    </div>
+  </div>
+
+  <!-- CAT: REPARACIÓN ARTÍSTICA -->
+  <div class="cat-sec">
+    <div class="cat-hd"><div class="cat-hd-t">Reparación Artística & Bordado</div><div class="cat-hd-c">04 cursos</div></div>
+    <div class="cat-sub">Convierte el daño en ornamento. La reparación visible como acto de belleza y resistencia.</div>
+    <div class="c-grid4">
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div></div><div class="cc-t">Remendar & Bordar Visible</div><div class="cc-d">El Sashiko y Kintsugi textil para convertir roturas y manchas en el detalle más bonito de tu prenda. Sin ocultar: celebrar.</div><div class="cc-tags"><span class="cc-tag">Sashiko</span><span class="cc-tag">Kintsugi</span><span class="cc-tag">Arte</span></div><div class="cc-ft"><span class="cc-dur">⌚ 5 sem · Online</span><span class="cc-price">$720</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div></div><div class="cc-t">Tejido con Lana Reciclada</div><div class="cc-d">Deshaz suéteres viejos y vuelve a tejer con esa lana. Dos agujas y crochet básico. El reciclaje más literal del textil.</div><div class="cc-tags"><span class="cc-tag">Tejido</span><span class="cc-tag">Lana</span><span class="cc-tag">Crochet</span></div><div class="cc-ft"><span class="cc-dur">⌚ 6 sem · Online</span><span class="cc-price">$780</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Intermedio</div></div><div class="cc-t">Bordado Contemporáneo Mixto</div><div class="cc-d">Hilo, cuentas, listones y telas: técnicas mixtas de bordado a mano aplicadas sobre prendas recicladas como arte textil.</div><div class="cc-tags"><span class="cc-tag">Bordado</span><span class="cc-tag">Arte textil</span><span class="cc-tag">Mixto</span></div><div class="cc-ft"><span class="cc-dur">⌚ 7 sem · Online</span><span class="cc-price">$890</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Avanzado</div><span class="cc-badge" style="background:var(--rojo)">Presencial</span></div><div class="cc-t">Quilting Sashiko Japonés</div><div class="cc-d">Patrones tradicionales japoneses para reforzar, embellecer y transformar tejidos. El bordado como arquitectura textil.</div><div class="cc-tags"><span class="cc-tag">Japonés</span><span class="cc-tag">León, Gto</span><span class="cc-tag">Avanzado</span></div><div class="cc-ft"><span class="cc-dur">⌚ 6 sem · Presencial</span><span class="cc-price">$1,500</span></div></div>
+    </div>
+  </div>
+
+  <!-- CAT: TINTE & COLOR -->
+  <div class="cat-sec">
+    <div class="cat-hd"><div class="cat-hd-t">Tinte Natural & Color</div><div class="cat-hd-c">03 cursos</div></div>
+    <div class="cat-sub">Dale nueva vida al color de tus telas usando plantas, minerales y técnicas ancestrales.</div>
+    <div class="c-grid4">
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div></div><div class="cc-t">Tinte Natural con Plantas</div><div class="cc-d">Cúrcuma, índigo, añil, cebolla, aguacate. Tiñe telas con lo que tienes en tu cocina o jardín. Sin químicos, sin contaminación.</div><div class="cc-tags"><span class="cc-tag">Plantas</span><span class="cc-tag">Sin químicos</span><span class="cc-tag">Cocina</span></div><div class="cc-ft"><span class="cc-dur">⌚ 4 sem · Online</span><span class="cc-price">$650</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Intermedio</div></div><div class="cc-t">Shibori & Tintes por Reserva</div><div class="cc-d">Plegado, atado y cosido japonés para crear patrones únicos de color. Shibori, Batik y Tie-Dye: tres familias de técnicas en un curso.</div><div class="cc-tags"><span class="cc-tag">Shibori</span><span class="cc-tag">Batik</span><span class="cc-tag">Patrones</span></div><div class="cc-ft"><span class="cc-dur">⌚ 6 sem · Online</span><span class="cc-price">$950</span></div></div>
+      <div class="cc"><div class="cc-top"><div class="cc-lvl">Básico</div><span class="cc-badge">Nuevo</span></div><div class="cc-t">Estampado con Sellos Naturales</div><div class="cc-d">Hojas, flores, corchos y materiales reciclados como sellos para personalizar telas y prendas. El proyecto más accesible de Telar.</div><div class="cc-tags"><span class="cc-tag">Sellos</span><span class="cc-tag">Gratis casi</span><span class="cc-tag">Niños OK</span></div><div class="cc-ft"><span class="cc-dur">⌚ 3 sem · Online</span><span class="cc-price">$480</span></div></div>
+      <div class="cc" style="background:var(--crema);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;padding:28px 18px;border-top:2px solid var(--gris-claro)"><div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.03em;text-align:center;color:var(--gris)">¿TIENES UNA TÉCNICA QUE QUIERES COMPARTIR?</div><div style="font-size:0.85rem;color:var(--gris);text-align:center;line-height:1.6">Colabora con Telar como creador de contenido o instructor invitado.</div><a onclick="showPage('contacto')" class="btn-or" style="font-size:0.62rem;padding:9px 18px">Contáctanos</a></div>
+    </div>
+  </div>
+
+</div><!-- /cursos -->
+
+<!-- ===================== PAGE: FUNDADORES ===================== -->
+<div id="page-fundadores" class="page page-top">
+
+  <div class="fund-hero">
+    <div class="fh-left">
+      <div class="eyebrow" style="color:rgba(250,246,240,0.6)">Quiénes somos</div>
+      <div class="display" style="font-size:clamp(3rem,5.5vw,6rem);color:var(--blanco)">LOS QUE<br>TEJIERON<br>TODO ESTO</div>
+      <p>Cinco estudiantes de TSU en Ingeniería TIC y Desarrollo de Software de León, Guanajuato que convirtieron una investigación académica en una plataforma real con impacto.</p>
+    </div>
+    <div class="fh-right">
+      <div class="fh-origen">
+        <div class="fh-origen-t">El origen: Proyecto Integrador TSU</div>
+        <div class="fh-origen-d">La consigna era investigar residuos valorizables en México. Nuestro equipo eligió los textiles porque el problema era masivo, poco documentado entre jóvenes y con alto potencial de transformación. La investigación derivó en Telar: una idea de monetización, difusión y educación que se volvió realidad.</div>
+      </div>
+      <div class="fh-pills">
+        <span class="fh-pill">Proyecto Integrador 2024</span>
+        <span class="fh-pill">TSU · León, Gto</span>
+        <span class="fh-pill">Residuos Valorizables</span>
+        <span class="fh-pill">Textiles</span>
+        <span class="fh-pill">Ingeniería TIC</span>
+        <span class="fh-pill">Dev. Software</span>
+      </div>
+    </div>
+  </div>
+  <div class="tb"></div>
+
+  <div class="founders-sec">
+    <div class="eyebrow">El equipo fundador</div>
+    <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.5rem);margin-bottom:0">CINCO MENTES,<br>UN TEJIDO</h2>
+    <div class="founders-grid5">
+
+      <div class="fc">
+        <div class="fc-av fav1">👩‍💻</div>
+        <div class="fc-idx">01</div>
+        <div class="fc-n">KAREN CRUCES</div>
+        <div class="fc-rol">Fundadora · Ing. TIC</div>
+        <div class="fc-bio">Lidera el desarrollo de la plataforma educativa y la experiencia de usuario de Telar. Especialidad en UX/UI y en hacer que la tecnología sea accesible para todos los públicos.</div>
+        <div class="fc-skills"><span class="fc-sk">UX/UI</span><span class="fc-sk">Frontend</span><span class="fc-sk">Educación digital</span></div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-av fav2">👩‍🔬</div>
+        <div class="fc-idx">02</div>
+        <div class="fc-n">ROMINA GAONA</div>
+        <div class="fc-rol">Fundadora · Ing. TIC</div>
+        <div class="fc-bio">Construyó la arquitectura de datos de Telar y los sistemas de métricas de impacto ambiental. Responsable de los reportes que muestran cuánto residuo textil evitamos colectivamente.</div>
+        <div class="fc-skills"><span class="fc-sk">Bases de datos</span><span class="fc-sk">Backend</span><span class="fc-sk">Analytics</span></div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-av fav3">👨‍💻</div>
+        <div class="fc-idx">03</div>
+        <div class="fc-n">IAN GODOY</div>
+        <div class="fc-rol">Fundador · Dev. Software</div>
+        <div class="fc-bio">Desarrollador de aplicaciones móviles. Creó la app de Telar y el sistema de seguimiento de hábitos que ayuda a los usuarios a medir su propio impacto de consumo textil.</div>
+        <div class="fc-skills"><span class="fc-sk">Mobile Dev</span><span class="fc-sk">Flutter</span><span class="fc-sk">Gamificación</span></div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-av fav4">👨‍🎨</div>
+        <div class="fc-idx">04</div>
+        <div class="fc-n">ARIEL MÉNDEZ</div>
+        <div class="fc-rol">Fundador · Dev. Software</div>
+        <div class="fc-bio">Desarrollador full-stack y responsable de la identidad visual de Telar. Diseñó el sistema de diseño que une los patrones textiles tradicionales mexicanos con la interfaz digital.</div>
+        <div class="fc-skills"><span class="fc-sk">Full Stack</span><span class="fc-sk">Design Systems</span><span class="fc-sk">Branding</span></div>
+      </div>
+
+      <div class="fc">
+        <div class="fc-av fav5">👨‍🔧</div>
+        <div class="fc-idx">05</div>
+        <div class="fc-n">SAID JIMÉNEZ</div>
+        <div class="fc-rol">Fundador · Ing. TIC</div>
+        <div class="fc-bio">Infraestructura cloud y seguridad. Mantiene la plataforma estable, segura y accesible. También lidera las relaciones con instituciones educativas para llevar Telar a más escuelas.</div>
+        <div class="fc-skills"><span class="fc-sk">Cloud</span><span class="fc-sk">DevOps</span><span class="fc-sk">Seguridad</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- El proyecto -->
+  <div class="proyecto">
+    <div class="proy-item">
+      <div class="proy-n">01</div>
+      <div class="proy-t">LA INVESTIGACIÓN</div>
+      <div class="proy-d">Nuestro proyecto integrador TSU investigó los residuos valorizables en México. Elegimos textiles: 40,000 toneladas anuales, sin sistema de gestión claro, con enorme potencial de revalorización. Los datos eran contundentes.</div>
+    </div>
+    <div class="proy-item">
+      <div class="proy-n">02</div>
+      <div class="proy-t">EL HALLAZGO</div>
+      <div class="proy-d">El mayor obstáculo no era la tecnología de reciclaje — era la falta de conciencia y educación, especialmente en jóvenes. La gente no sabía el impacto de su ropa ni qué hacer con ella.</div>
+    </div>
+    <div class="proy-item">
+      <div class="proy-n">03</div>
+      <div class="proy-t">TELAR NACE</div>
+      <div class="proy-d">La monetización y difusión tomó forma de plataforma: cursos para aprender técnicas textiles, tips gratuitos de reuso, y contenido educativo sobre fast fashion dirigido a jóvenes de secundaria y prepa.</div>
+    </div>
+  </div>
+
+</div><!-- /fundadores -->
+
+<!-- ===================== PAGE: NOSOTROS ===================== -->
+<div id="page-nosotros" class="page page-top">
+
+  <div class="nos-hero pattern-dark">
+    <div>
+      <div class="eyebrow inv">Nuestra historia</div>
+      <div class="display" style="font-size:clamp(3rem,5.5vw,6rem);color:var(--blanco)">NACIÓ EN<br>UN AULA,<br><em>CRECIÓ</em><br><em>AFUERA</em></div>
+    </div>
+    <div>
+      <p>Telar comenzó como un proyecto integrador de investigación para TSU. Cinco estudiantes de ingeniería, una pregunta académica sobre residuos valorizables, y la decisión de no quedarse en el papel.</p>
+      <p style="margin-top:14px">Hoy Telar es una plataforma funcional con cursos, contenido educativo, comunidad y un objetivo claro: reducir el consumo de fast fashion entre jóvenes mexicanos dándoles conocimiento, herramientas y comunidad.</p>
+    </div>
+  </div>
+  <div class="tb-inv"></div>
+
+  <div class="nos-story">
+    <div class="ns-l">
+      <h3>La historia completa</h3>
+      <p>La consigna del proyecto integrador era clara: investiga residuos valorizables en México y propón un modelo de monetización o difusión. La mayoría de los equipos eligió plásticos o papel. El nuestro eligió textiles.</p>
+      <p>La razón fue simple: el problema era enorme (40,000 toneladas al año solo en México), prácticamente invisible para los jóvenes, y tenía algo que otros residuos no tenían: una solución que también era cultural, creativa y económicamente viable para quienes la aprendieran.</p>
+      <p>Durante meses investigamos datos, entrevistamos a artesanas, estudiamos técnicas de upcycling, bordado y tinte, y analizamos cómo otras plataformas educativas habían abordado problemas similares. Al final, Telar era la respuesta lógica: una plataforma que educa, enseña y conecta.</p>
+      <a onclick="showPage('fundadores')" class="btn-r" style="margin-top:6px">Conocer al equipo →</a>
+    </div>
+    <div class="ns-r pattern-red">
+      <div class="ns-q"><div class="ns-qt">"Elegimos textiles porque era el residuo con más historia, más cultura y más potencial de transformar hábitos."</div><div class="ns-qb">— Equipo fundador, proyecto TSU 2024</div></div>
+      <div class="ns-q"><div class="ns-qt">"No queríamos solo entregar un reporte. Queríamos que algo real saliera de la investigación."</div><div class="ns-qb">— Karen Cruces, fundadora</div></div>
+      <div class="ns-q"><div class="ns-qt">"El fast fashion es un problema de datos y de cultura. Nosotros podíamos atacar las dos cosas."</div><div class="ns-qb">— Said Jiménez, fundador</div></div>
+    </div>
+  </div>
+
+  <div class="nos-mision">
+    <div class="eyebrow">Nuestro propósito</div>
+    <h2 class="display" style="font-size:clamp(2rem,3.5vw,3.5rem);margin-bottom:0">MISIÓN & VISIÓN</h2>
+    <div class="mis-grid">
+      <div class="mis-blk"><h4>Misión</h4><p>Reducir el consumo de fast fashion entre jóvenes mexicanos, especialmente en secundarias y preparatorias, a través de educación, difusión de tips accesibles y formación en técnicas textiles sostenibles.</p></div>
+      <div class="mis-blk"><h4>Visión</h4><p>Que cualquier joven en México sepa qué es el fast fashion, entienda su impacto, conozca alternativas concretas y tenga acceso a herramientas para actuar diferente. Sin importar su ciudad, nivel socioeconómico o experiencia previa.</p></div>
+      <div class="mis-blk"><h4>¿Por qué jóvenes?</h4><p>Porque son el grupo que más consume fast fashion, el que más presión social recibe de las tendencias digitales, y el que más puede cambiar sus hábitos a largo plazo. Un hábito formado hoy dura décadas.</p></div>
+      <div class="mis-blk"><h4>¿Por qué textiles?</h4><p>Porque son el residuo más subestimado. El plástico tiene campañas. El papel tiene reciclaje. Los textiles rara vez aparecen en la educación ambiental. Nosotros los ponemos al centro.</p></div>
+    </div>
+  </div>
+
+  <div class="nos-imp">
+    <div class="ni"><div class="ni-n">40K</div><div class="ni-l">Toneladas de residuos textiles anuales en México</div></div>
+    <div class="ni"><div class="ni-n">TSU</div><div class="ni-l">Origen: Proyecto integrador de investigación 2024</div></div>
+    <div class="ni"><div class="ni-n">5</div><div class="ni-l">Fundadores · Ing. TIC y Dev. Software</div></div>
+    <div class="ni"><div class="ni-n">León</div><div class="ni-l">Guanajuato, México · Base de operaciones</div></div>
+  </div>
+
+</div><!-- /nosotros -->
+
+<!-- ===================== PAGE: CONTACTO ===================== -->
+<div id="page-contacto" class="page page-top">
+  <div class="ct-wrap">
+    <div class="ct-l">
+      <div class="eyebrow inv">Únete</div>
+      <div class="display" style="font-size:clamp(2.8rem,5vw,5.5rem);color:var(--blanco)">HABLEMOS<br><span>TEXTIL</span></div>
+      <p>¿Quieres tomar un curso, tienes una duda, quieres colaborar o llevar Telar a tu escuela? Escríbenos. Respondemos en menos de 24 horas.</p>
+      <div class="ct-info">
+        <div class="ci-row"><div class="ci-ico">📧</div><div><div class="ci-lbl">Email</div><div class="ci-val">hola@telar.mx</div></div></div>
+        <div class="ci-row"><div class="ci-ico">📱</div><div><div class="ci-lbl">WhatsApp</div><div class="ci-val">+52 477 123 4567</div></div></div>
+        <div class="ci-row"><div class="ci-ico">📍</div><div><div class="ci-lbl">Taller presencial</div><div class="ci-val">León, Guanajuato, México</div></div></div>
+        <div class="ci-row"><div class="ci-ico">🏫</div><div><div class="ci-lbl">¿Tu escuela quiere Telar?</div><div class="ci-val">Llevamos talleres y charlas a<br>secundarias y preparatorias</div></div></div>
+        <div class="ci-row"><div class="ci-ico">📸</div><div><div class="ci-lbl">Redes</div><div class="ci-val">@telar.mx en Instagram · TikTok · YouTube</div></div></div>
+      </div>
+    </div>
+    <div class="ct-r">
+      <h3>ESCRÍBENOS</h3>
+      <p>Cuéntanos qué necesitas. Cursos, colaboraciones, talleres escolares o simplemente dudas.</p>
+      <div class="frow">
+        <div class="fg"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+        <div class="fg"><label>Apellido</label><input type="text" placeholder="Tu apellido"></div>
+      </div>
+      <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tu@correo.com"></div>
+      <div class="fg"><label>Soy...</label>
+        <select>
+          <option value="">Selecciona</option>
+          <option>Estudiante de secundaria</option>
+          <option>Estudiante de preparatoria</option>
+          <option>Maestro/a o directivo escolar</option>
+          <option>Universitario/a</option>
+          <option>Público general</option>
+          <option>Organización o empresa</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fg"><label>Me interesa...</label>
+        <select>
+          <option value="">Selecciona</option>
+          <option>Tomar un curso</option>
+          <option>Información sobre fast fashion</option>
+          <option>Llevar Telar a mi escuela</option>
+          <option>Colaborar como instructor/a</option>
+          <option>Patrocinio o alianza</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="fg"><label>Mensaje</label><textarea placeholder="Cuéntanos en qué podemos ayudarte..."></textarea></div>
+      <a class="btn-r" style="cursor:pointer">Enviar mensaje</a>
+    </div>
+  </div>
+</div><!-- /contacto -->
+
+<!-- FOOTER -->
+<div class="foot-pat"></div>
+<footer>
+  <div class="fb">
+    <div class="fb-logo">TEL<span>AR</span></div>
+    <div class="fb-desc">Plataforma educativa de concientización sobre fast fashion y técnicas textiles sostenibles. Proyecto nacido de investigación TSU sobre residuos valorizables. León, Guanajuato, México. 2024.</div>
+  </div>
+  <div class="fc-col">
+    <h5>Explorar</h5>
+    <a onclick="showPage('problema')">El problema</a>
+    <a onclick="showPage('tips')">Tips & Guías</a>
+    <a onclick="showPage('cursos')">Cursos</a>
+    <a onclick="showPage('contacto')">Únete</a>
+  </div>
+  <div class="fc-col">
+    <h5>Telar</h5>
+    <a onclick="showPage('nosotros')">Nosotros</a>
+    <a onclick="showPage('fundadores')">Fundadores</a>
+    <a onclick="showPage('contacto')">Contacto</a>
+    <a onclick="showPage('contacto')">Llevar a mi escuela</a>
+  </div>
+  <div class="fc-col">
+    <h5>Contacto</h5>
+    <a onclick="showPage('contacto')">hola@telar.mx</a>
+    <a onclick="showPage('contacto')">Instagram @telar.mx</a>
+    <a onclick="showPage('contacto')">TikTok @telar.mx</a>
+    <a onclick="showPage('contacto')">YouTube · Telar</a>
+  </div>
+</footer>
+<div class="foot-bottom">
+  <span class="fb-txt">© 2026 TELAR · Karen Cruces · Romina Gaona · Ian Godoy · Ariel Méndez · Said Jiménez</span>
+  <span class="fb-txt">Proyecto TSU · Residuos Valorizables · León, Guanajuato, México</span>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.querySelectorAll('.fbtn, .tc-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const group = this.closest('.filter-wrap, .tips-cats');
+    if (group) group.querySelectorAll('.fbtn, .tc-btn').forEach(b => b.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
